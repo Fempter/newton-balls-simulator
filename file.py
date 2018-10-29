@@ -1,5 +1,5 @@
 import numpy as np
-import random
+from numpy import random
 
 
 class Box:
