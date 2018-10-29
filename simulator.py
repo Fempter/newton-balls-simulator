@@ -16,8 +16,8 @@ class Box:
             raise ValueError("The parameter X of the ball does not match the range of the plane X.")
         elif y not in self.y_plane:
             raise ValueError("The parameter X of the ball does not match the range of the plane X.")
-        elif diameter <= 0:
-            raise ValueError("Diameter must be more than 0.")
+        if diameter <= 0 or diameter not in self.x_plane or diameter not in self.y_plane:
+            raise ValueError("Diameter must be more than 0 and match range of planes.")
         else:
             self.points.append(Point(x, y, velocity_x, velocity_y, diameter))
 
@@ -27,13 +27,15 @@ class Box:
             y = np.round(random.choice(np.arange(0, self.y + self.step, self.step)), 1)
             velocity_x = round(random.uniform(0, 10), 2)
             velocity_y = round(random.uniform(0, 10), 2)
-            while True:
-                diameter = round(random.uniform(0, 1.), 2)
-                if diameter > 0:
-                    break
+            diameter = self.point_diameter()
             self.add_point(x, y, velocity_x, velocity_y, diameter)
 
-        # siatka co 0.5 i losowanie co 0.5 - OGARNĄĆ!!!!!!!!
+    def point_diameter(self):
+        diameter_range = np.round(np.arange(0, 1+self.step, self.step), 1)
+        while True:
+            diameter = random.choice(diameter_range)
+            if diameter > 0:
+                return diameter
 
     def show_points(self):
         print("\nList contains {0} points: \n{1}\n".format(len(self.points), self.points))
