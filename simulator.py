@@ -3,7 +3,8 @@ from numpy import random
 
 
 class Box:
-    """This class is creating box with set parameters including generating various numbers of points in it."""
+    """This class is creating for box generating with set parameters including generating various numbers of points
+    in it."""
 
     def __init__(self, x, y, step):
         self.x = x
@@ -86,14 +87,6 @@ class Point:
     def __repr__(self):
         return u"Point(%s, %s)" % (self.x, self.y)
 
-
-'''
-b1 = Ball(x=0,y=0,velocity_x=2,velocity_y=3)
-b1.save_move(300, 5)
-print()
-b1.show()
-b1.box
-'''
 
 my_box = Box(100000, 100000, step=0.2)
 
