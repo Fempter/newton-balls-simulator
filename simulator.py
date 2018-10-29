@@ -3,6 +3,8 @@ from numpy import random
 
 
 class Box:
+    """This class is creating box with set parameters including generating various numbers of points in it."""
+
     def __init__(self, x, y, step):
         self.x = x
         self.y = y
