@@ -13,11 +13,11 @@ class Box:
 
     def add_point(self, x, y, velocity_x, velocity_y, diameter):
         if x not in self.x_plane:
-            raise ValueError("Parametr X kulki nie zgadza się z zakresem płaszczyzny X")
+            raise ValueError("The parameter X of the ball does not match the range of the plane X.")
         elif y not in self.y_plane:
-            raise ValueError("Parametr Y kulki nie zgadza się z zakresem płaszczyzny Y")
+            raise ValueError("The parameter X of the ball does not match the range of the plane X.")
         elif diameter <= 0:
-            raise ValueError("Średnica musi być większa od 0")
+            raise ValueError("Diameter must be more than 0.")
         else:
             self.points.append(Point(x, y, velocity_x, velocity_y, diameter))
 
@@ -36,7 +36,7 @@ class Box:
         # siatka co 0.5 i losowanie co 0.5 - OGARNĄĆ!!!!!!!!
 
     def show_points(self):
-        print("\nList contains {0} points: \n{1}".format(len(self.points), self.points))
+        print("\nList contains {0} points: \n{1}\n".format(len(self.points), self.points))
 
 
 class Point:
@@ -76,8 +76,8 @@ class Point:
                 my_file.write('%d,%d,%d\n' % (x, y, t))
 
     def show(self):
-        print("Współrzędne [x,y]: %d, %d" % (self.x, self.y))
-        print("Prędkość: %0.2f" % self.velocity())
+        print("Coordinate [x,y]: %d, %d" % (self.x, self.y))
+        print("Velocity: %0.2f" % self.velocity())
 
     def __repr__(self):
         return u"Point(%s, %s)" % (self.x, self.y)
