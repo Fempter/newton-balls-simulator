@@ -27,8 +27,8 @@ class Box:
 
     def add_random_points(self, n):
         for n in range(n):
-            x = np.round(random.choice(np.arange(0, self.x + self.step, self.step)), 1)
-            y = np.round(random.choice(np.arange(0, self.y + self.step, self.step)), 1)
+            x = random.choice(self.x_plane)
+            y = random.choice(self.y_plane)
             velocity_x = round(random.uniform(0, 10), 2)
             velocity_y = round(random.uniform(0, 10), 2)
             diameter = self.point_diameter()
