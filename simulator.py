@@ -2,7 +2,7 @@ import numpy as np
 from numpy import random
 
 
-class Box:
+class Box():
     """This class is creating for box generating with set parameters including generating various numbers of points
     in it."""
 
@@ -19,8 +19,7 @@ class Box:
             raise ValueError("The parameter X of the ball does not match the range of the plane X.")
         elif y not in self.y_plane:
             raise ValueError("The parameter Y of the ball does not match the range of the plane Y.")
-
-        if diameter <= 0 or diameter not in self.x_plane or diameter not in self.y_plane:
+        elif diameter <= 0 or diameter not in self.x_plane or diameter not in self.y_plane:
             raise ValueError("Diameter must be more than 0 and match range of planes.")
         else:
             self.points.append(Point(x, y, velocity_x, velocity_y, diameter))
@@ -41,11 +40,15 @@ class Box:
             if diameter > 0:
                 return diameter
 
+    def check_diameter(self):
+        """Checking is point with diameter not out of X plane or Y plane"""
+        pass
+
     def show_points(self):
         print("\nList contains {0} points: \n{1}\n".format(len(self.points), self.points))
 
 
-class Point:
+class Point():
     """This class is responsible for creating point information"""
 
     def __init__(self, x, y, velocity_x, velocity_y, diameter):
