@@ -45,6 +45,8 @@ class Box:
 
 
 class Point:
+    """This class is responsible for creating point information"""
+
     def __init__(self, x, y, velocity_x, velocity_y, diameter):
         self.x = x
         self.y = y
