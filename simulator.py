@@ -18,7 +18,8 @@ class Box:
         if x not in self.x_plane:
             raise ValueError("The parameter X of the ball does not match the range of the plane X.")
         elif y not in self.y_plane:
-            raise ValueError("The parameter X of the ball does not match the range of the plane X.")
+            raise ValueError("The parameter Y of the ball does not match the range of the plane Y.")
+
         if diameter <= 0 or diameter not in self.x_plane or diameter not in self.y_plane:
             raise ValueError("Diameter must be more than 0 and match range of planes.")
         else:
