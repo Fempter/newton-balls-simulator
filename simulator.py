@@ -52,6 +52,12 @@ class Point:
         self.velocity_y = velocity_y
         self.diameter = diameter
 
+    def __repr__(self):
+        return "Point(%s, %s)" % (self.x, self.y)
+
+    def __str__(self):
+        return "(%s, %s)" % (self.x, self.y)
+
     def velocity(self):
         velocity = np.sqrt(self.velocity_x ** 2 + self.velocity_y ** 2)
         return velocity
@@ -83,9 +89,6 @@ class Point:
     def show(self):
         print("Coordinate [x,y]: %d, %d" % (self.x, self.y))
         print("Velocity: %0.2f" % self.velocity())
-
-    def __repr__(self):
-        return u"Point(%s, %s)" % (self.x, self.y)
 
 
 my_box = Box(100000, 100000, step=0.2)
