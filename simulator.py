@@ -1,42 +1,45 @@
 import numpy as np
-from numpy import random
+import time
 
 
-class Box():
-    """This class is creating for box generating with set parameters including generating various numbers of points
+class Box:
+    """This class is made for box generating with set parameters including generating various numbers of points
     in it."""
 
-    def __init__(self, x, y, step):
+    def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.step = step
-        self.x_plane = np.round(np.arange(0, x + step, step), 1)
-        self.y_plane = np.round(np.arange(0, y + step, step), 1)
-        self.points = list()
+        self.x_plane = range(x)
+        self.y_plane = range(y)
+        self.points_list = list()
 
     def add_point(self, x, y, velocity_x, velocity_y, diameter):
         if x not in self.x_plane:
             raise ValueError("The parameter X of the ball does not match the range of the plane X.")
         elif y not in self.y_plane:
             raise ValueError("The parameter Y of the ball does not match the range of the plane Y.")
-        elif diameter <= 0 or diameter not in self.x_plane or diameter not in self.y_plane:
-            raise ValueError("Diameter must be more than 0 and match range of planes.")
+        # elif diameter <= 0 or diameter not in self.x_plane or diameter not in self.y_plane:
+            # raise ValueError("Diameter must be more than 0 and match range of planes.")
         else:
-            self.points.append(Point(x, y, velocity_x, velocity_y, diameter))
+            self.points_list.append(Point(x, y, velocity_x, velocity_y, diameter))
 
-    def add_random_points(self, n):
+    def add_random_points(self, percentage):
+
+        percentage = percentage/100
+
+        n = round(self.x*self.y*percentage)
         for n in range(n):
-            x = random.choice(self.x_plane)
-            y = random.choice(self.y_plane)
-            velocity_x = round(random.uniform(0, 10), 2)
-            velocity_y = round(random.uniform(0, 10), 2)
-            diameter = self.point_diameter()
-            self.add_point(x, y, velocity_x, velocity_y, diameter)
+            x = np.random.choice(self.x_plane)
+            y = np.random.choice(self.y_plane)
+            velocity_x = round(np.random.uniform(0, 10), 2)
+            velocity_y = round(np.random.uniform(0, 10), 2)
+            # diameter = self.point_diameter()
+            self.add_point(x, y, velocity_x, velocity_y, diameter=0)
 
     def point_diameter(self):
-        diameter_range = np.round(np.arange(0, 1+self.step, self.step), 1)
+        diameter_range = np.round(np.arange(0, 1), 1)
         while True:
-            diameter = random.choice(diameter_range)
+            diameter = np.random.choice(diameter_range)
             if diameter > 0:
                 return diameter
 
@@ -45,10 +48,19 @@ class Box():
         pass
 
     def show_points(self):
-        print("\nList contains {0} points: \n{1}\n".format(len(self.points), self.points))
+        print("\nList contains {0} points: \n{1}\n".format(len(self.points_list), self.points_list))
+
+    def get_position_list(self):
+        return [[0 for i in range(self.x)] for j in range(self.y)]
+
+    def save_ppm(self, file_name):
+        with open(file_name, "w") as file:
+            file.write("P1\n")
+            file.write("{0} {1}\n".format(self.x, self.y))
+        PPM(self.points_list, self.get_position_list()).save(file_name)
 
 
-class Point():
+class Point:
     """This class is responsible for creating point information"""
 
     def __init__(self, x, y, velocity_x, velocity_y, diameter):
@@ -97,10 +109,26 @@ class Point():
         print("Velocity: %0.2f" % self.velocity())
 
 
-my_box = Box(100000, 100000, step=0.2)
+class PPM:
 
-my_box.add_random_points(10)
-my_box.show_points()
+    def __init__(self, points_list, position_list):
+        self.position_list = position_list
 
+        for my_point in points_list:
+            self.position_list[my_point.x][my_point.y] = 1
+
+    def save(self, file_name):
+        with open(file_name, "a") as file:
+            for line in self.position_list:
+                for value in line:
+                    file.write("%s " % (value))
+                file.write("\n")
+
+t1 = time.time()
+my_box = Box(1000, 1000)
+
+my_box.add_random_points(1) # percentage
+my_box.save_ppm('image.ppm')
+print("Execution time: {0:.2f}s".format(time.time()-t1))
 # for one, two in zip(my_box.x_plane, my_box.y_plane):
 # print(one, two)
