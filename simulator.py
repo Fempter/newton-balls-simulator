@@ -26,9 +26,9 @@ class Box:
             for point in self.points_list:
                 point.x, point.y = point.move(t)
                 while point.x not in self.x_plane:
-                    point.x = self.x_plane[0] + point.x - self.x_plane[-1]
+                    point.x = min(self.x_plane) + point.x - max(self.x_plane)
                 while point.y not in self.y_plane:
-                    point.y = self.y_plane[0] + point.y - self.y_plane[-1]
+                    point.y = min(self.y_plane) + point.y - max(self.y_plane)
 
                 if point.x not in self.x_plane or point.y not in self.y_plane:
                     print("Błąd")
