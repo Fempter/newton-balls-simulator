@@ -13,28 +13,38 @@ class Box:
         self.y_plane = range(y)
         self.points_list = list()
 
-    def add_point(self, x, y, velocity_x, velocity_y, diameter):
+    def add_point(self, x, y, velocity_x, velocity_y):
         if x not in self.x_plane:
             raise ValueError("The parameter X of the ball does not match the range of the plane X.")
         elif y not in self.y_plane:
             raise ValueError("The parameter Y of the ball does not match the range of the plane Y.")
-        # elif diameter <= 0 or diameter not in self.x_plane or diameter not in self.y_plane:
-            # raise ValueError("Diameter must be more than 0 and match range of planes.")
         else:
-            self.points_list.append(Point(x, y, velocity_x, velocity_y, diameter))
+            self.points_list.append(Point(x, y, velocity_x, velocity_y))
+
+    def movement(self, t, dt):
+        for n in range(0, t+1, dt):
+            for point in self.points_list:
+                point.x, point.y = point.move(t)
+                while point.x not in self.x_plane:
+                    point.x = self.x_plane[0] + point.x - self.x_plane[-1]
+                while point.y not in self.y_plane:
+                    point.y = self.y_plane[0] + point.y - self.y_plane[-1]
+
+                if point.x not in self.x_plane or point.y not in self.y_plane:
+                    print("Błąd")
+            self.save_ppm('%s.ppm' % n)
 
     def add_random_points(self, percentage):
+        percentage = percentage / 100
 
-        percentage = percentage/100
-
-        n = round(self.x*self.y*percentage)
+        n = round(self.x * self.y * percentage)
         for n in range(n):
             x = np.random.choice(self.x_plane)
             y = np.random.choice(self.y_plane)
-            velocity_x = round(np.random.uniform(0, 10), 2)
-            velocity_y = round(np.random.uniform(0, 10), 2)
+            velocity_x = np.random.randint(0, 10)
+            velocity_y = np.random.randint(0, 10)
             # diameter = self.point_diameter()
-            self.add_point(x, y, velocity_x, velocity_y, diameter=0)
+            self.add_point(x, y, velocity_x, velocity_y)
 
     def point_diameter(self):
         diameter_range = np.round(np.arange(0, 1), 1)
@@ -63,12 +73,11 @@ class Box:
 class Point:
     """This class is responsible for creating point information"""
 
-    def __init__(self, x, y, velocity_x, velocity_y, diameter):
+    def __init__(self, x, y, velocity_x, velocity_y):
         self.x = x
         self.y = y
         self.velocity_x = velocity_x
         self.velocity_y = velocity_y
-        self.diameter = diameter
 
     def __repr__(self):
         return "Point(%s, %s)" % (self.x, self.y)
@@ -121,14 +130,16 @@ class PPM:
         with open(file_name, "a") as file:
             for line in self.position_list:
                 for value in line:
-                    file.write("%s " % (value))
+                    file.write("%s " % value)
                 file.write("\n")
 
-t1 = time.time()
-my_box = Box(1000, 1000)
 
-my_box.add_random_points(1) # percentage
-my_box.save_ppm('image.ppm')
-print("Execution time: {0:.2f}s".format(time.time()-t1))
+t1 = time.time()
+my_box = Box(500, 500)
+
+my_box.add_random_points(0.01)  # percentage
+# my_box.save_ppm("image.ppm")
+my_box.movement(10, 0.1)
+print("Execution time: {0:.2f}s".format(time.time() - t1))
 # for one, two in zip(my_box.x_plane, my_box.y_plane):
 # print(one, two)
