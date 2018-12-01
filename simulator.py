@@ -22,17 +22,18 @@ class Box:
             self.points_list.append(Point(x, y, velocity_x, velocity_y))
 
     def movement(self, t, dt):
-        for n in range(0, t+1, dt):
+        for n in [round(i, 0) for i in np.arange(0, t+1, dt)]:
             for point in self.points_list:
-                point.x, point.y = point.move(t)
-                while point.x not in self.x_plane:
-                    point.x = min(self.x_plane) + point.x - max(self.x_plane)
-                while point.y not in self.y_plane:
-                    point.y = min(self.y_plane) + point.y - max(self.y_plane)
+                point.x, point.y = point.move(dt)
+                while not min(self.x_plane) < point.x < max(self.x_plane):
+                    point.x = point.x - max(self.x_plane)
+                while not min(self.y_plane) < point.y < max(self.y_plane):
+                    print(point.y)
+                    point.y = abs(point.y - max(self.y_plane))
 
                 if point.x not in self.x_plane or point.y not in self.y_plane:
                     print("Błąd")
-            self.save_ppm('%s.ppm' % n)
+            self.save_ppm('%s.ppm' % np.round(n, 0))
 
     def add_random_points(self, percentage):
         percentage = percentage / 100
@@ -139,7 +140,7 @@ my_box = Box(500, 500)
 
 my_box.add_random_points(0.01)  # percentage
 # my_box.save_ppm("image.ppm")
-my_box.movement(10, 0.1)
+my_box.movement(10, 1)
 print("Execution time: {0:.2f}s".format(time.time() - t1))
 # for one, two in zip(my_box.x_plane, my_box.y_plane):
 # print(one, two)
